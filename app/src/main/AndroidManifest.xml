@@ -23,8 +23,11 @@
         <activity android:name=".activities.VideosActivity" />
         <activity
             android:name=".activities.SelectedVideoActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activities.SelectedImagesActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

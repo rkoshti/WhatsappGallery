@@ -4,17 +4,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import com.rajesh.gallery.R;
 import com.rajesh.gallery.adapter.ImageGridAdapter;
+import com.rajesh.gallery.listener.RecyclerItemClickListener;
 import com.rajesh.gallery.model.MediaObject;
 import com.rajesh.gallery.utils.MediaType;
 import com.rajesh.gallery.utils.Utils;
-
-
 import java.util.ArrayList;
 
 public class ImagesActivity extends AppCompatActivity {
@@ -23,6 +24,8 @@ public class ImagesActivity extends AppCompatActivity {
     private ImageGridAdapter campaignAdapter;
     private RecyclerView rvCampaign;
     private String bucketName;
+    private ArrayList<MediaObject> selectedImages;
+    private FloatingActionButton btnDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class ImagesActivity extends AppCompatActivity {
     private void InitializeViews() {
 
         rvCampaign = (RecyclerView) findViewById(R.id.rv_images);
+        btnDone = (FloatingActionButton) findViewById(R.id.fab_done);
 
         rvCampaign.setHasFixedSize(true);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
@@ -55,6 +59,43 @@ public class ImagesActivity extends AppCompatActivity {
 
         campaignAdapter = new ImageGridAdapter(arrayListAlbums,this);
         rvCampaign.setAdapter(campaignAdapter);
+
+        selectedImages = new ArrayList<>();
+
+        rvCampaign.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                MediaObject album = arrayListAlbums.get(position);
+
+                 if(album.isSelected()){
+                     album.setSelected(false);
+                     selectedImages.remove(album);
+                 }else {
+                     album.setSelected(true);
+                     selectedImages.add(album);
+                 }
+
+                 campaignAdapter.notifyItemChanged(position);
+
+                if(selectedImages.size() > 0){
+
+                    btnDone.setVisibility(View.VISIBLE);
+
+                }else {
+                    btnDone.setVisibility(View.GONE);
+                }
+
+            }
+        }));
+
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
 
     }

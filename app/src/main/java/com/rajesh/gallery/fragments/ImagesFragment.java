@@ -1,7 +1,6 @@
 package com.rajesh.gallery.fragments;
 
 
-
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import com.rajesh.gallery.R;
 import com.rajesh.gallery.activities.GalleryActivity;
 import com.rajesh.gallery.adapter.ImageAlbumAdapter;
+import com.rajesh.gallery.listener.RecyclerItemClickListener;
 import com.rajesh.gallery.model.GalleryPhotoAlbum;
 
 
@@ -64,7 +64,6 @@ public class ImagesFragment extends Fragment {
     }*/
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,12 +83,10 @@ public class ImagesFragment extends Fragment {
         }).start();
 
 
-
         return view;
     }
 
     private void findViews() {
-
 
         rvCampaign = (RecyclerView) view.findViewById(R.id.rv_images);
 
@@ -102,16 +99,15 @@ public class ImagesFragment extends Fragment {
     }
 
 
-
     /**
      * retrieve image album and set
      */
     private void getPhotoList() {
 
         // which image properties are we querying
-        String[] PROJECTION_BUCKET = { MediaStore.Images.ImageColumns.BUCKET_ID,
+        String[] PROJECTION_BUCKET = {MediaStore.Images.ImageColumns.BUCKET_ID,
                 MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME, MediaStore.Images.ImageColumns.DATE_TAKEN,
-                MediaStore.Images.ImageColumns.DATA };
+                MediaStore.Images.ImageColumns.DATA};
         // We want to order the albums by reverse chronological order. We abuse
         // the
         // "WHERE" parameter to insert a "GROUP BY" clause into the SQL
@@ -230,7 +226,7 @@ public class ImagesFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            campaignAdapter = new ImageAlbumAdapter(arrayListAlbums,parentActivity);
+                            campaignAdapter = new ImageAlbumAdapter(arrayListAlbums, parentActivity);
                             rvCampaign.setAdapter(campaignAdapter);
                         }
                     });
@@ -239,10 +235,5 @@ public class ImagesFragment extends Fragment {
             }
         }
     }
-
-
-
-
-
 
 }

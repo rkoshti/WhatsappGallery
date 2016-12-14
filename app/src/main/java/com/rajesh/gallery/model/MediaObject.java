@@ -12,6 +12,7 @@ public class MediaObject implements Comparable<MediaObject> {
     private MediaType mediaType;
     private Long mediaTakenDateMillis;
     private String duration;
+    private boolean isSelected;
 
     public MediaObject(int id, String path, MediaType mediaType, long mediaTakenDateMillis) {
         this.id = id;
@@ -67,5 +68,13 @@ public class MediaObject implements Comparable<MediaObject> {
     @Override
     public int compareTo(MediaObject another) {
         return another.mediaTakenDateMillis.compareTo(mediaTakenDateMillis);
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

@@ -8,7 +8,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.rajesh.gallery.R;
 import com.rajesh.gallery.model.MediaObject;
@@ -44,6 +46,13 @@ public class ImageGridAdapter extends RecyclerView.Adapter<ImageGridAdapter.MyVi
         if(!TextUtils.isEmpty(movie.getPath())){
             Utils.loadImageFromUrl(holder.imgThumb,context,movie.getPath());
         }
+
+        if(movie.isSelected()){
+            holder.viewSelected.setVisibility(View.VISIBLE);
+        }else {
+            holder.viewSelected.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -54,12 +63,13 @@ public class ImageGridAdapter extends RecyclerView.Adapter<ImageGridAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgThumb;
-
+        RelativeLayout viewSelected;
 
         public MyViewHolder(View view) {
             super(view);
 
             imgThumb = (ImageView) view.findViewById(R.id.album_thumbnail);
+            viewSelected = (RelativeLayout) view.findViewById(R.id.view_selected);
 
         }
     }

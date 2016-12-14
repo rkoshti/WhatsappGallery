@@ -6,13 +6,15 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.rajesh.gallery.R;
 
-public class SelectedVideoActivity extends AppCompatActivity {
+public class SelectedImagesActivity extends AppCompatActivity {
 
     private String videoURI;
     private VideoView videoView;
@@ -27,18 +29,18 @@ public class SelectedVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_selected_video);
 
 
-     /*   Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         videoView = (VideoView) findViewById(R.id.VideoView);
 
-       /* getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
-        });*/
+        });
 
 
     }
@@ -59,8 +61,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     private void prepareMediaPlayerForPlayVideo() {
 
+
         // Create a progressbar
-        pDialog = new ProgressDialog(SelectedVideoActivity.this);
+        pDialog = new ProgressDialog(SelectedImagesActivity.this);
         // Set progressbar title
         pDialog.setTitle("Please Wait...");
         // Set progressbar message
@@ -73,7 +76,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         try {
             // Start the MediaController
             mediacontroller = new MediaController(
-                    SelectedVideoActivity.this);
+                    SelectedImagesActivity.this);
             mediacontroller.setAnchorView(videoView);
             // Get the URL from String VideoURL
             Uri video = Uri.parse(videoURI);
