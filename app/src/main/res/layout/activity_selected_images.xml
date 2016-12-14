@@ -1,44 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rajesh.gallery.activities.SelectedVideoActivity">
+    android:background="@android:color/background_dark"
+    android:orientation="vertical"
+    android:weightSum="2"
+    tools:context="com.rajesh.gallery.activities.SelectedImagesActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_images"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="0dp"
+        android:layout_weight="1.6"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/background_dark"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_images"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_dark">
+        android:layout_height="0dp"
+        android:layout_weight="0.4" />
 
-        <VideoView
-            android:id="@+id/VideoView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"/>
+</LinearLayout>
 
-    </FrameLayout>
-
-   <!-- <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />-->
-
-</android.support.design.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.rajesh.gallery.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.Image;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -93,6 +94,10 @@ public class ImagesActivity extends AppCompatActivity {
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            Intent i = new Intent(ImagesActivity.this,SelectedImagesActivity.class);
+            i.putExtra("images",selectedImages);
+            startActivity(i);
 
             }
         });

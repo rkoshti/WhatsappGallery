@@ -1,122 +1,119 @@
 package com.rajesh.gallery.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import com.rajesh.gallery.R;
+import com.rajesh.gallery.adapter.ImageGalleryThumbAdapter;
+import com.rajesh.gallery.adapter.ImagePreviewAdapter;
+import com.rajesh.gallery.listener.RecyclerItemClickListener;
+import com.rajesh.gallery.model.MediaObject;
+
+import java.util.ArrayList;
 
 public class SelectedImagesActivity extends AppCompatActivity {
 
-    private String videoURI;
-    private VideoView videoView;
-    private ProgressDialog pDialog;
-    private MediaController mediacontroller;
-    private String TAG = "SelectedVideoActivity";
+    private ViewPager pagerImages;
+    private ImagePreviewAdapter pagerAdapter;
+    private ArrayList<MediaObject> listOfImages;
+    private RecyclerView rvImages;
+    private ImageGalleryThumbAdapter imageThumbAdapter;
+    private int selectedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getIntentData(getIntent());
-        setContentView(R.layout.activity_selected_video);
+        setContentView(R.layout.activity_selected_images);
 
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        videoView = (VideoView) findViewById(R.id.VideoView);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationIcon(R.drawable.ic_action_back);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
+        init();
 
     }
 
     private void getIntentData(Intent intent) {
 
-        videoURI = intent.getStringExtra("videoPath");
-        Log.e(TAG, "getIntentData: " + videoURI);
+        listOfImages = (ArrayList<MediaObject>) intent.getSerializableExtra("images");
+        if (listOfImages.size() > 0)
+            clearSelection();
+
     }
 
+    private void clearSelection() {
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        for (int i = 0; i < listOfImages.size(); i++) {
 
-        prepareMediaPlayerForPlayVideo();
-    }
+            if (i > 0) {
 
-    private void prepareMediaPlayerForPlayVideo() {
+                listOfImages.get(i).setSelected(false);
+            }
 
-
-        // Create a progressbar
-        pDialog = new ProgressDialog(SelectedImagesActivity.this);
-        // Set progressbar title
-        pDialog.setTitle("Please Wait...");
-        // Set progressbar message
-        pDialog.setMessage("Buffering video...");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
-        // Show progressbar
-        pDialog.show();
-
-        try {
-            // Start the MediaController
-            mediacontroller = new MediaController(
-                    SelectedImagesActivity.this);
-            mediacontroller.setAnchorView(videoView);
-            // Get the URL from String VideoURL
-            Uri video = Uri.parse(videoURI);
-            videoView.setMediaController(mediacontroller);
-            videoView.setVideoURI(video);
-
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
         }
+    }
 
-        videoView.requestFocus();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            // Close the progress bar and play the video
-            public void onPrepared(MediaPlayer mp) {
-                pDialog.dismiss();
-                videoView.start();
+    private void init() {
+
+        pagerImages = (ViewPager) findViewById(R.id.pager_images);
+        rvImages = (RecyclerView) findViewById(R.id.rv_images);
+        pagerAdapter = new ImagePreviewAdapter(SelectedImagesActivity.this, listOfImages);
+        pagerImages.setAdapter(pagerAdapter);
+
+        rvImages.setLayoutManager(new LinearLayoutManager(SelectedImagesActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        rvImages.setHasFixedSize(true);
+
+        imageThumbAdapter = new ImageGalleryThumbAdapter(listOfImages, SelectedImagesActivity.this);
+        rvImages.setAdapter(imageThumbAdapter);
+
+        rvImages.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                listOfImages.get(selectedPosition).setSelected(false);
+                imageThumbAdapter.notifyItemChanged(selectedPosition);
+                selectedPosition = position;
+                listOfImages.get(selectedPosition).setSelected(true);
+                imageThumbAdapter.notifyItemChanged(selectedPosition);
+                //imageThumbAdapter.notifyDataSetChanged();
+                pagerImages.setCurrentItem(selectedPosition, true);
+
+            }
+        }));
+
+        pagerImages.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+
+                listOfImages.get(selectedPosition).setSelected(false);
+                //imageThumbAdapter.notifyItemChanged(selectedPosition);
+                selectedPosition = position;
+                listOfImages.get(selectedPosition).setSelected(true);
+               // imageThumbAdapter.notifyItemChanged(selectedPosition);
+                imageThumbAdapter.notifyDataSetChanged();
+                rvImages.smoothScrollToPosition(position);
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
 
-
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        if (videoView != null) {
-            videoView.stopPlayback();
-        }
-    }
 
     @Override
     public void onBackPressed() {
-
-        if (videoView != null) {
-
-            if (videoView.isPlaying())
-                videoView.stopPlayback();
-        }
 
         finish();
     }

@@ -16,7 +16,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     private String videoURI;
     private VideoView videoView;
-    private ProgressDialog pDialog;
+    //private ProgressDialog pDialog;
     private MediaController mediacontroller;
     private String TAG = "SelectedVideoActivity";
 
@@ -59,7 +59,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     private void prepareMediaPlayerForPlayVideo() {
 
-        // Create a progressbar
+       /* // Create a progressbar
         pDialog = new ProgressDialog(SelectedVideoActivity.this);
         // Set progressbar title
         pDialog.setTitle("Please Wait...");
@@ -68,7 +68,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         pDialog.setIndeterminate(false);
         pDialog.setCancelable(false);
         // Show progressbar
-        pDialog.show();
+        pDialog.show();*/
 
         try {
             // Start the MediaController
@@ -89,7 +89,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             // Close the progress bar and play the video
             public void onPrepared(MediaPlayer mp) {
-                pDialog.dismiss();
+                // pDialog.dismiss();
                 videoView.start();
             }
         });

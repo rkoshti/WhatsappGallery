@@ -4,8 +4,10 @@ import android.net.Uri;
 
 import com.rajesh.gallery.utils.MediaType;
 
+import java.io.Serializable;
 
-public class MediaObject implements Comparable<MediaObject> {
+
+public class MediaObject implements Comparable<MediaObject> , Serializable {
 
     private int id;
     private String path;
